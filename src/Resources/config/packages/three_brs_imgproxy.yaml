@@ -1,0 +1,37 @@
+# Example configuration for ThreeBRS Imgproxy Bundle
+# Copy this file to your project's config/packages/ directory
+#
+# Installation:
+#   cp vendor/3brs/imgproxy-bundle/config/packages/three_brs_imgproxy.yaml config/packages/
+#
+# Then edit the values below to match your environment
+
+three_brs_imgproxy:
+    # Imgproxy server URL
+    # For local development: http://localhost:8080
+    # For production: https://imgproxy.your-domain.com
+    base_url: '%env(string:IMGPROXY_URL)%'
+
+    # Base URL for source images (your S3/CDN endpoint)
+    # Examples:
+    #   AWS S3: https://your-bucket.s3.amazonaws.com
+    #   DigitalOcean Spaces: https://your-bucket.fra1.digitaloceanspaces.com
+    #   CloudFront: https://d111111abcdef8.cloudfront.net
+    source_base_url: '%env(string:IMGPROXY_SOURCE_URL)%'
+
+    # S3 prefix path (optional)
+    # If your images are stored in a subdirectory like 'media/image' or 'app/stage/uploads'
+    # Set via environment variable to allow different values per environment
+    # Examples: 'media/image', 'uploads/products', 'app/stage/media/image'
+    # Leave empty ('') if images are in bucket root
+    source_prefix: '%env(string:IMGPROXY_SOURCE_PREFIX)%'
+
+    # URL signing (optional but HIGHLY recommended for production)
+    # Generate keys with: echo $(xxd -g 2 -l 64 -p /dev/random | tr -d '\n')
+    # For production, use environment variables with real keys
+    key: '%env(IMGPROXY_KEY)%'
+    salt: '%env(IMGPROXY_SALT)%'
+
+    # Alternative for local development without signing:
+    # key: ~
+    # salt: ~
