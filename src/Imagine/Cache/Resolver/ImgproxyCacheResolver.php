@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace ThreeBrs\ImgproxyBundle\Imagine\Cache\Resolver;
+namespace ThreeBRS\ImgproxyBundle\Imagine\Cache\Resolver;
 
 use Liip\ImagineBundle\Binary\BinaryInterface;
 use Liip\ImagineBundle\Imagine\Cache\Resolver\ResolverInterface;
-use ThreeBrs\ImgproxyBundle\Imagine\Filter\FilterConfigConverter;
-use ThreeBrs\ImgproxyBundle\Imagine\ImgproxyUrlBuilder;
+use ThreeBRS\ImgproxyBundle\Imagine\Filter\FilterConfigConverter;
+use ThreeBRS\ImgproxyBundle\Imagine\ImgproxyUrlBuilder;
 
 /**
  * Cache resolver that generates imgproxy URLs instead of processing images locally

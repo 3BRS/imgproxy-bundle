@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ThreeBrs\ImgproxyBundle\Imagine;
+namespace ThreeBRS\ImgproxyBundle\Imagine;
 
 /**
  * Generates imgproxy URLs with optional signing

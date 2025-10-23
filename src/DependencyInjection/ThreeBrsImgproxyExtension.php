@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ThreeBrs\ImgproxyBundle\DependencyInjection;
+namespace ThreeBRS\ImgproxyBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\FileLocator;
@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class ThreeBrsImgproxyExtension extends Extension
+final class ThreeBRSImgproxyExtension extends Extension
 {
     public function getAlias(): string
     {

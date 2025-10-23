@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ThreeBrs\ImgproxyBundle\Imagine\Filter;
+namespace ThreeBRS\ImgproxyBundle\Imagine\Filter;
 
 use Liip\ImagineBundle\Imagine\Filter\FilterConfiguration;
 

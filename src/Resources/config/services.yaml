@@ -5,7 +5,7 @@ services:
         public: false
 
     # URL Builder
-    ThreeBrs\ImgproxyBundle\Imagine\ImgproxyUrlBuilder:
+    ThreeBRS\ImgproxyBundle\Imagine\ImgproxyUrlBuilder:
         arguments:
             $baseUrl: '%threebrs_imgproxy.base_url%'
             $sourceBaseUrl: '%threebrs_imgproxy.source_base_url%'
@@ -14,11 +14,11 @@ services:
             $salt: '%threebrs_imgproxy.salt%'
 
     # Filter Config Converter
-    ThreeBrs\ImgproxyBundle\Imagine\Filter\FilterConfigConverter:
+    ThreeBRS\ImgproxyBundle\Imagine\Filter\FilterConfigConverter:
         arguments:
             $filterConfig: '@liip_imagine.filter.configuration'
 
     # Cache Resolver
-    ThreeBrs\ImgproxyBundle\Imagine\Cache\Resolver\ImgproxyCacheResolver:
+    ThreeBRS\ImgproxyBundle\Imagine\Cache\Resolver\ImgproxyCacheResolver:
         tags:
             - { name: 'liip_imagine.cache.resolver', resolver: 'imgproxy' }

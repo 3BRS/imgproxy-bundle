@@ -25,7 +25,7 @@
     },
     "autoload": {
         "psr-4": {
-            "ThreeBrs\\ImgproxyBundle\\": "src/"
+            "ThreeBRS\\ImgproxyBundle\\": "src/"
         }
     },
     "extra": {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ThreeBrs\ImgproxyBundle\DependencyInjection;
+namespace ThreeBRS\ImgproxyBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

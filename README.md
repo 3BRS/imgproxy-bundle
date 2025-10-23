@@ -33,7 +33,7 @@ If you're not using Symfony Flex, register the bundle in `config/bundles.php`:
 ```php
 return [
     // ...
-    ThreeBrs\ImgproxyBundle\ThreeBrsImgproxyBundle::class => ['all' => true],
+    ThreeBRS\ImgproxyBundle\ThreeBRSImgproxyBundle::class => ['all' => true],
 ];
 ```
 
