@@ -6,21 +6,21 @@ namespace ThreeBRS\ImgproxyBundle\Imagine\Cache\Resolver;
 
 use Liip\ImagineBundle\Binary\BinaryInterface;
 use Liip\ImagineBundle\Imagine\Cache\Resolver\ResolverInterface;
-use ThreeBRS\ImgproxyBundle\Imagine\Filter\FilterConfigConverter;
-use ThreeBRS\ImgproxyBundle\Imagine\ImgproxyUrlBuilder;
+use ThreeBRS\ImgproxyBundle\Imagine\Filter\FilterConfigConverterInterface;
+use ThreeBRS\ImgproxyBundle\Imagine\ImgproxyUrlBuilderInterface;
 
 /**
  * Cache resolver that generates imgproxy URLs instead of processing images locally
  */
 class ImgproxyCacheResolver implements ResolverInterface
 {
-    private ImgproxyUrlBuilder $urlBuilder;
+    private ImgproxyUrlBuilderInterface $urlBuilder;
 
-    private FilterConfigConverter $configConverter;
+    private FilterConfigConverterInterface $configConverter;
 
     public function __construct(
-        ImgproxyUrlBuilder $urlBuilder,
-        FilterConfigConverter $configConverter,
+        ImgproxyUrlBuilderInterface $urlBuilder,
+        FilterConfigConverterInterface $configConverter,
     ) {
         $this->urlBuilder = $urlBuilder;
         $this->configConverter = $configConverter;

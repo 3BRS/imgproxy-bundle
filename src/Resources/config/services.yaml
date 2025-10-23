@@ -13,10 +13,18 @@ services:
             $key: '%threebrs_imgproxy.key%'
             $salt: '%threebrs_imgproxy.salt%'
 
+    # URL Builder Interface Alias
+    ThreeBRS\ImgproxyBundle\Imagine\ImgproxyUrlBuilderInterface:
+        alias: ThreeBRS\ImgproxyBundle\Imagine\ImgproxyUrlBuilder
+
     # Filter Config Converter
     ThreeBRS\ImgproxyBundle\Imagine\Filter\FilterConfigConverter:
         arguments:
             $filterConfig: '@liip_imagine.filter.configuration'
+
+    # Filter Config Converter Interface Alias
+    ThreeBRS\ImgproxyBundle\Imagine\Filter\FilterConfigConverterInterface:
+        alias: ThreeBRS\ImgproxyBundle\Imagine\Filter\FilterConfigConverter
 
     # Cache Resolver
     ThreeBRS\ImgproxyBundle\Imagine\Cache\Resolver\ImgproxyCacheResolver:
