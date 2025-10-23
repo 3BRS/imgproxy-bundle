@@ -9,7 +9,7 @@ use Liip\ImagineBundle\Imagine\Filter\FilterConfiguration;
 /**
  * Converts Liip Imagine filter configuration to imgproxy parameters
  */
-class FilterConfigConverter
+class FilterConfigConverter implements FilterConfigConverterInterface
 {
     private FilterConfiguration $filterConfig;
 

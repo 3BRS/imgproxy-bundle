@@ -37,7 +37,14 @@ return [
 ];
 ```
 
-### Step 3: Set environment variables
+### Step 3: Configure imgproxy
+Create `config/packages/config.yaml`
+
+```yaml
+imports:
+    - { resource: "@ThreeBRSImgproxyBundle/Resources/config/packages/three_brs_imgproxy.yaml" }
+
+### Step 4: Set environment variables
 
 ```bash
 # Imgproxy server URL
@@ -54,7 +61,7 @@ IMGPROXY_KEY=your_hex_key_here
 IMGPROXY_SALT=your_hex_salt_here
 ```
 
-### Step 4: Update Liip Imagine configuration
+### Step 5: Update Liip Imagine configuration
 
 In `config/packages/liip_imagine.yaml`, change the cache resolver:
 
@@ -64,7 +71,7 @@ liip_imagine:
     cache: imgproxy  # Change from 'default' or your current resolver
 ```
 
-### Step 5: Clear cache
+### Step 6: Clear cache
 
 ```bash
 php bin/console cache:clear

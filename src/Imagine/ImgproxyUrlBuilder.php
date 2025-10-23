@@ -7,7 +7,7 @@ namespace ThreeBRS\ImgproxyBundle\Imagine;
 /**
  * Generates imgproxy URLs with optional signing
  */
-class ImgproxyUrlBuilder
+class ImgproxyUrlBuilder implements ImgproxyUrlBuilderInterface
 {
     private string $baseUrl;
 
