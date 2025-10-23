@@ -28,7 +28,7 @@ composer require 3brs/imgproxy-bundle
 
 ### Step 2: Register the bundle
 
-If you're not using Symfony Flex, register the bundle in `config/bundles.php`:
+Register the bundle in `config/bundles.php`:
 
 ```php
 return [
