@@ -1,0 +1,11 @@
+services:
+    php:
+        build: ./.docker/php
+        working_dir: /app
+        environment:
+            COMPOSER_HOME: "/tmp"
+            HOME: "/tmp"
+            PHP_DATE_TIMEZONE: "Europe/Prague"
+        volumes:
+            - ./:/app:delegated
+        command: sleep infinity

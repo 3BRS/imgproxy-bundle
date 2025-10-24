@@ -26,9 +26,6 @@ class ImgproxyCacheResolver implements ResolverInterface
         $this->configConverter = $configConverter;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function isStored($path, $filter): bool
     {
         // imgproxy generates URLs on-the-fly, so images are always "stored"
@@ -36,9 +33,6 @@ class ImgproxyCacheResolver implements ResolverInterface
         return true;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function resolve($path, $filter): string
     {
         // Skip imgproxy for static assets (webpack encore builds, etc.)
@@ -52,6 +46,18 @@ class ImgproxyCacheResolver implements ResolverInterface
 
         // Generate and return imgproxy URL
         return $this->urlBuilder->build($path, $options);
+    }
+
+    public function store(BinaryInterface $binary, $path, $filter): void
+    {
+        // No-op: imgproxy doesn't store images, it generates them on-the-fly
+        // Images are stored in the original S3 bucket
+    }
+
+    public function remove(array $paths, array $filters): void
+    {
+        // No-op: nothing to remove since imgproxy doesn't cache locally
+        // Cache is managed by imgproxy itself
     }
 
     /**
@@ -82,23 +88,5 @@ class ImgproxyCacheResolver implements ResolverInterface
         }
 
         return false;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function store(BinaryInterface $binary, $path, $filter): void
-    {
-        // No-op: imgproxy doesn't store images, it generates them on-the-fly
-        // Images are stored in the original S3 bucket
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function remove(array $paths, array $filters): void
-    {
-        // No-op: nothing to remove since imgproxy doesn't cache locally
-        // Cache is managed by imgproxy itself
     }
 }

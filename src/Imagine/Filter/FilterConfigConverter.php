@@ -60,7 +60,7 @@ class FilterConfigConverter implements FilterConfigConverterInterface
         $options = [];
 
         foreach ($filters as $filterName => $filterConfig) {
-            if (!is_array($filterConfig)) {
+            if (! is_array($filterConfig)) {
                 $filterConfig = [];
             }
 
