@@ -23,9 +23,16 @@ install: ## Install composer dependencies
 update: ## Update composer dependencies
 	docker compose exec php composer update
 
-test: ## Run all tests (ECS + PHPStan)
+test: ## Run all tests (PHPUnit + ECS + PHPStan)
+	docker compose exec php vendor/bin/phpunit --no-coverage
 	docker compose exec php composer ecs
 	docker compose exec php composer phpstan
+
+phpunit: ## Run PHPUnit tests
+	docker compose exec php vendor/bin/phpunit --no-coverage
+
+phpunit-coverage: ## Run PHPUnit with coverage report
+	docker compose exec -e XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-html=var/coverage
 
 audit: ## Check for security vulnerabilities (dev dependencies only)
 	docker compose exec php composer audit

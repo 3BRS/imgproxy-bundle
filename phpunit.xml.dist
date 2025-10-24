@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         cacheDirectory="var/cache/phpunit"
+         failOnWarning="false"
+         failOnRisky="true"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutCoverageMetadata="false">
+
+    <testsuites>
+        <testsuite name="Imgproxy Bundle Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <include>
+            <directory>src</directory>
+        </include>
+    </source>
+
+    <coverage includeUncoveredFiles="true">
+        <report>
+            <html outputDirectory="var/coverage"/>
+            <text outputFile="php://stdout" showUncoveredFiles="false"/>
+        </report>
+    </coverage>
+</phpunit>

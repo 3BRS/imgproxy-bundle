@@ -41,10 +41,12 @@ jobs:
 
             # Test with prefer-lowest (oldest compatible dependencies)
             -   run: composer update --no-interaction --prefer-lowest --prefer-stable
+            -   run: vendor/bin/phpunit --no-coverage
             -   run: composer ecs
             -   run: composer phpstan
 
             # Test with prefer-stable (latest compatible dependencies)
             -   run: composer update --no-interaction --prefer-stable
+            -   run: vendor/bin/phpunit --no-coverage
             -   run: composer ecs
             -   run: composer phpstan

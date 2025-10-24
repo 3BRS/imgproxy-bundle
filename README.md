@@ -228,7 +228,9 @@ Run `make help` to see all available commands:
 
 ```bash
 make install          # Install composer dependencies
-make test             # Run all tests (ECS + PHPStan)
+make test             # Run all tests (PHPUnit + ECS + PHPStan)
+make phpunit          # Run PHPUnit tests
+make phpunit-coverage # Run tests with coverage report
 make ecs              # Check code style
 make ecs-fix          # Fix code style issues
 make phpstan          # Run static analysis
@@ -245,9 +247,28 @@ Run the complete test suite:
 make test
 
 # Or run individually
+make phpunit          # Unit tests
 make ecs              # Code style check
 make phpstan          # Static analysis
 ```
+
+### Unit Tests
+
+The project uses PHPUnit for unit testing:
+
+```bash
+# Run tests
+make phpunit
+
+# Generate HTML coverage report
+make phpunit-coverage
+
+# Coverage report will be in var/coverage/index.html
+```
+
+**Current Test Coverage:**
+- `ImgproxyUrlBuilder` - URL generation, signing, options handling
+- More tests coming soon...
 
 ### Security Audit
 
@@ -278,6 +299,11 @@ The project uses CircleCI to test against multiple PHP and Symfony versions:
 - **PHP versions**: 8.0, 8.1, 8.2, 8.3, 8.4
 - **Symfony versions**: 5.4, 6.4, 7.1
 - **Dependency strategies**: `--prefer-lowest` and `--prefer-stable`
+
+Each CI build runs:
+1. **PHPUnit** - Unit tests
+2. **ECS** - Code style checks
+3. **PHPStan** - Static analysis (level 8)
 
 ## Contributing
 

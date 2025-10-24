@@ -27,14 +27,22 @@
         "symplify/easy-coding-standard": "^12.1",
         "phpstan/phpstan": "^2.0",
         "phpstan/extension-installer": "^1.4",
-        "phpstan/phpstan-symfony": "^2.0"
+        "phpstan/phpstan-symfony": "^2.0",
+        "phpunit/phpunit": "^10.0|^11.0"
     },
     "autoload": {
         "psr-4": {
             "ThreeBRS\\ImgproxyBundle\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "ThreeBRS\\ImgproxyBundle\\Tests\\": "tests/"
+        }
+    },
     "scripts": {
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-html=var/coverage",
         "ecs": "ecs check",
         "ecs-fix": "ecs check --fix",
         "phpstan": "phpstan analyse",
