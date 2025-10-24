@@ -94,7 +94,18 @@ class FilterConfigConverter implements FilterConfigConverterInterface
 
                     break;
                 case 'background':
-                    $options = array_merge($options, $this->convertBackground($filterConfig));
+                    $backgroundOptions = $this->convertBackground($filterConfig);
+                    // Don't let background filter override resize mode or dimensions from previous filters
+                    if (isset($options['resize'])) {
+                        unset($backgroundOptions['resize']);
+                    }
+                    if (isset($options['width'])) {
+                        unset($backgroundOptions['width']);
+                    }
+                    if (isset($options['height'])) {
+                        unset($backgroundOptions['height']);
+                    }
+                    $options = array_merge($options, $backgroundOptions);
 
                     break;
                 case 'rotate':
@@ -220,8 +231,10 @@ class FilterConfigConverter implements FilterConfigConverterInterface
             [$width, $height] = $config['size'];
             $options['width'] = $width;
             $options['height'] = $height;
-            $options['resize'] = 'fill';
+            // Enable extend to add background padding around the resized image
             $options['extend'] = 1;
+            // Don't set resize mode - let previous filters (like thumbnail) determine it
+            // If no previous resize mode was set, imgproxy will default to 'fit'
         }
 
         return $options;
