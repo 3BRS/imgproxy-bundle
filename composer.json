@@ -28,7 +28,8 @@
         "phpstan/phpstan": "^2.0",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan-symfony": "^2.0",
-        "phpunit/phpunit": "^9.6|^10.0|^11.0"
+        "phpunit/phpunit": "^9.6|^10.0|^11.0",
+        "deptrac/deptrac": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -46,7 +47,8 @@
         "ecs": "ecs check",
         "ecs-fix": "ecs check --fix",
         "phpstan": "phpstan analyse",
-        "phpstan-baseline": "phpstan analyse --generate-baseline"
+        "phpstan-baseline": "phpstan analyse --generate-baseline",
+        "deptrac": "deptrac analyse --cache-file=var/cache/deptrac.cache"
     },
     "extra": {
         "branch-alias": {

@@ -1,0 +1,41 @@
+deptrac:
+  paths:
+    - ./src
+
+  exclude_files:
+    - '#.*test.*#i'
+
+  layers:
+    - name: Bundle
+      collectors:
+        - type: class
+          value: ThreeBRS\\ImgproxyBundle\\ThreeBRSImgproxyBundle
+
+    - name: DependencyInjection
+      collectors:
+        - type: directory
+          value: src/DependencyInjection/.*
+
+    - name: Imagine
+      collectors:
+        - type: directory
+          value: src/Imagine/.*
+
+  ruleset:
+    # Bundle layer can depend on anything
+    Bundle:
+      - Bundle
+      - DependencyInjection
+      - Imagine
+
+    # DependencyInjection can depend on Imagine (to configure services)
+    DependencyInjection:
+      - DependencyInjection
+      - Imagine
+
+    # Imagine is the core business logic - should be independent
+    Imagine:
+      - Imagine
+
+  skip_violations:
+    # Add specific violations to skip here if needed

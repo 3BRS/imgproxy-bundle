@@ -23,10 +23,11 @@ install: ## Install composer dependencies
 update: ## Update composer dependencies
 	docker compose exec php composer update
 
-test: ## Run all tests (PHPUnit + ECS + PHPStan)
+test: ## Run all tests (PHPUnit + ECS + PHPStan + Deptrac)
 	docker compose exec php vendor/bin/phpunit --no-coverage
 	docker compose exec php composer ecs
 	docker compose exec php composer phpstan
+	docker compose exec php composer deptrac
 
 phpunit: ## Run PHPUnit tests
 	docker compose exec php vendor/bin/phpunit --no-coverage
@@ -48,6 +49,9 @@ phpstan: ## Run PHPStan static analysis
 
 phpstan-baseline: ## Generate PHPStan baseline
 	docker compose exec php composer phpstan-baseline
+
+deptrac: ## Run Deptrac architecture analysis
+	docker compose exec php composer deptrac
 
 build: ## Rebuild Docker images
 	docker compose build --no-cache
