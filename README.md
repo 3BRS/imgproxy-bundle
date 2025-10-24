@@ -293,7 +293,10 @@ make rector-fix
 - ✅ Dead code removal
 - ✅ Symfony/PHPUnit best practices
 
-**Note:** Rector maintains PHP 8.0 compatibility while using modern syntax.
+**Notes:**
+- Rector maintains PHP 8.0 compatibility while using modern syntax
+- Rector requires PHPStan 1.x, which doesn't support PHP 8.4
+- On PHP 8.4, use PHPStan 2.x instead (Rector will be unavailable)
 
 ### Security Audit
 
@@ -330,6 +333,7 @@ Each CI build runs:
 2. **ECS** - Code style checks
 3. **PHPStan** - Static analysis (level 8)
 4. **Deptrac** - Architecture validation (PHP 8.1+ only)
+5. **Rector** - Code modernization checks (PHP 8.0-8.3)
 
 **Architecture Layers:**
 
@@ -338,7 +342,9 @@ The project uses Deptrac to enforce clean architecture:
 - **DependencyInjection** - Service configuration (can depend on Imagine)
 - **Imagine** - Core business logic (independent, no external dependencies)
 
-*Note: Deptrac requires PHP 8.1+ and is automatically skipped on PHP 8.0 builds.*
+**Version-specific tools:**
+- **PHP 8.0**: Deptrac skipped (requires PHP 8.1+)
+- **PHP 8.4**: Rector skipped (PHPStan 2.x required for PHP 8.4, which conflicts with Rector 1.x)
 
 ## Contributing
 
