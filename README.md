@@ -1,6 +1,24 @@
-# Imgproxy Bundle for Symfony
+<p align="center">
+    <a href="https://www.3brs.com" target="_blank">
+        <img src="https://3brs1.fra1.cdn.digitaloceanspaces.com/3brs/logo/3BRS-logo-sylius-200.png"/>
+    </a>
+</p>
 
-A Symfony bundle that integrates [imgproxy](https://imgproxy.net/) with [Liip Imagine Bundle](https://github.com/liip/LiipImagineBundle), replacing on-the-fly image processing with imgproxy's powerful and performant image transformation service.
+<h1 align="center">Imgproxy Bundle for Symfony</h1>
+
+<p align="center">
+    <a href="https://packagist.org/packages/3brs/imgproxy-bundle" title="License">
+        <img src="https://img.shields.io/packagist/l/3brs/imgproxy-bundle.svg">
+    </a>
+    <a href="https://packagist.org/packages/3brs/imgproxy-bundle" title="Version">
+        <img src="https://img.shields.io/packagist/v/3brs/imgproxy-bundle.svg">
+    </a>
+    <a href="https://circleci.com/gh/3BRS/imgproxy-bundle" title="Build Status">
+        <img src="https://circleci.com/gh/3BRS/imgproxy-bundle.svg?style=shield">
+    </a>
+</p>
+
+<p align="center">A Symfony bundle that integrates <a href="https://imgproxy.net/">imgproxy</a> with <a href="https://github.com/liip/LiipImagineBundle">Liip Imagine Bundle</a>, replacing on-the-fly image processing with imgproxy's powerful and performant image transformation service.</p>
 
 ## Features
 
@@ -38,11 +56,13 @@ return [
 ```
 
 ### Step 3: Configure imgproxy
-Create `config/packages/config.yaml`
+
+Create `config/packages/three_brs_imgproxy.yaml`:
 
 ```yaml
 imports:
     - { resource: "@ThreeBRSImgproxyBundle/Resources/config/packages/three_brs_imgproxy.yaml" }
+```
 
 ### Step 4: Set environment variables
 
@@ -126,6 +146,52 @@ No changes to your templates are needed! All existing `imagine_filter` calls wor
 </picture>
 ```
 
+### How It Works
+
+```
+┌─────────────────┐
+│  Twig Template  │
+│  imagine_filter │
+└────────┬────────┘
+         │
+         v
+┌─────────────────────┐
+│   Imgproxy Bundle   │
+│  (Cache Resolver)   │
+└────────┬────────────┘
+         │
+         v
+┌─────────────────────┐      ┌──────────────┐
+│  Imgproxy Server    │◄─────│  S3 / CDN    │
+│  (Image Processing) │      │  (Source)    │
+└────────┬────────────┘      └──────────────┘
+         │
+         v
+┌─────────────────────┐
+│   Generated URL     │
+│   (Signed/Unsigned) │
+└─────────────────────┘
+```
+
+**Example Generated URLs:**
+
+```
+# Without signing (development)
+https://imgproxy.example.com/insecure/resize:fill:300:200/plain/s3-bucket.com/image.jpg
+
+# With signing (production)
+https://imgproxy.example.com/AbC123.../resize:fill:300:200/plain/s3-bucket.com/image.jpg
+```
+
+### Performance Benefits
+
+Using imgproxy provides significant performance improvements:
+
+- ⚡ **Native Go Performance** - Up to 10x faster than PHP-based image processing
+- 🔄 **On-the-fly Processing** - No need to pre-generate image variations
+- 💾 **Reduced Storage** - Store only original images, generate variants on demand
+- 🌐 **CDN Compatible** - imgproxy URLs can be cached by CDN for global distribution
+
 ## Static Assets
 
 The bundle automatically detects and skips static assets (webpack builds, bundles):
@@ -136,10 +202,90 @@ The bundle automatically detects and skips static assets (webpack builds, bundle
 
 These are returned without imgproxy processing.
 
+## Development
+
+### Setting up Development Environment
+
+1. Clone the repository:
+```bash
+git clone https://github.com/3BRS/imgproxy-bundle.git
+cd imgproxy-bundle
+```
+
+2. Install dependencies:
+```bash
+composer install
+```
+
+3. Start Docker environment:
+```bash
+make up
+```
+
+### Available Make Commands
+
+Run `make help` to see all available commands:
+
+```bash
+make install          # Install composer dependencies
+make test             # Run all tests (ECS + PHPStan)
+make ecs              # Check code style
+make ecs-fix          # Fix code style issues
+make phpstan          # Run static analysis
+make bash             # Connect to PHP container
+```
+
+## Testing
+
+Run the complete test suite:
+
+```bash
+# Run all quality checks
+make test
+
+# Or run individually
+make ecs              # Code style check
+make phpstan          # Static analysis
+```
+
+### Continuous Integration
+
+The project uses CircleCI to test against multiple PHP and Symfony versions:
+
+- **PHP versions**: 8.0, 8.1, 8.2, 8.3, 8.4
+- **Symfony versions**: 5.4, 6.4, 7.1
+- **Dependency strategies**: `--prefer-lowest` and `--prefer-stable`
+
+## Contributing
+
+We welcome contributions! Please follow these guidelines:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Run tests (`make test`)
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+### Code Quality Standards
+
+- Follow PSR-12 coding standards
+- Ensure PHPStan passes at level 8
+- Write meaningful commit messages
+- Add tests for new features
+
 ## License
 
-MIT
+This project is licensed under the MIT License.
 
 ## Credits
 
-Developed by [3BRS](https://3brs.com)
+Developed and maintained by [3BRS](https://3brs.com)
+
+## Support
+
+- 🐛 [Report bugs](https://github.com/3BRS/imgproxy-bundle/issues)
+- 💡 [Request features](https://github.com/3BRS/imgproxy-bundle/issues)
+- 📖 [Imgproxy Documentation](https://docs.imgproxy.net/)
+- 📖 [Liip Imagine Bundle Documentation](https://symfony.com/bundles/LiipImagineBundle/current/index.html)
