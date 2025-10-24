@@ -1,7 +1,6 @@
 {
     "name": "3brs/imgproxy-bundle",
     "type": "symfony-bundle",
-    "version": "1.0.0",
     "description": "Imgproxy integration for Liip Imagine Bundle - replaces image processing with imgproxy",
     "keywords": [
         "symfony",
@@ -25,7 +24,7 @@
         "liip/imagine-bundle": "^2.0"
     },
     "require-dev": {
-        "symplify/easy-coding-standard": "^12.0",
+        "symplify/easy-coding-standard": "^12.1",
         "phpstan/phpstan": "^2.0",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan-symfony": "^2.0"
