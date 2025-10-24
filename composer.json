@@ -25,11 +25,12 @@
     },
     "require-dev": {
         "symplify/easy-coding-standard": "^12.1",
-        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan": "^1.10|^2.0",
         "phpstan/extension-installer": "^1.4",
-        "phpstan/phpstan-symfony": "^2.0",
+        "phpstan/phpstan-symfony": "^1.3|^2.0",
         "phpunit/phpunit": "^9.6|^10.0|^11.0",
-        "deptrac/deptrac": "^2.0"
+        "deptrac/deptrac": "^2.0",
+        "rector/rector": "^1.0"
     },
     "autoload": {
         "psr-4": {
@@ -48,7 +49,9 @@
         "ecs-fix": "ecs check --fix",
         "phpstan": "phpstan analyse",
         "phpstan-baseline": "phpstan analyse --generate-baseline",
-        "deptrac": "deptrac analyse --cache-file=var/cache/deptrac.cache"
+        "deptrac": "deptrac analyse --cache-file=var/cache/deptrac.cache",
+        "rector": "rector process --dry-run",
+        "rector-fix": "rector process"
     },
     "extra": {
         "branch-alias": {

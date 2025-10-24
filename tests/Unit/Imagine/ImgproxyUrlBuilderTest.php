@@ -23,8 +23,8 @@ final class ImgproxyUrlBuilderTest extends TestCase
 
         $url = $builder->build('product.jpg');
 
-        self::assertStringStartsWith(self::BASE_URL . '/insecure/', $url);
-        self::assertStringContainsString(base64_encode(self::SOURCE_BASE_URL . '/' . self::SOURCE_PREFIX . '/product.jpg'), $url);
+        $this->assertStringStartsWith(self::BASE_URL . '/insecure/', $url);
+        $this->assertStringContainsString(base64_encode(self::SOURCE_BASE_URL . '/' . self::SOURCE_PREFIX . '/product.jpg'), $url);
     }
 
     public function testBuildUnsignedUrlWithResizeOptions(): void
@@ -41,9 +41,9 @@ final class ImgproxyUrlBuilderTest extends TestCase
             'height' => 200,
         ]);
 
-        self::assertStringStartsWith(self::BASE_URL . '/insecure/', $url);
-        self::assertStringContainsString('resize:fill', $url);
-        self::assertStringContainsString('size:300:200', $url);
+        $this->assertStringStartsWith(self::BASE_URL . '/insecure/', $url);
+        $this->assertStringContainsString('resize:fill', $url);
+        $this->assertStringContainsString('size:300:200', $url);
     }
 
     public function testBuildSignedUrl(): void
@@ -61,10 +61,10 @@ final class ImgproxyUrlBuilderTest extends TestCase
 
         $url = $builder->build('product.jpg');
 
-        self::assertStringStartsWith(self::BASE_URL . '/', $url);
-        self::assertStringNotContainsString('/insecure/', $url);
+        $this->assertStringStartsWith(self::BASE_URL . '/', $url);
+        $this->assertStringNotContainsString('/insecure/', $url);
         // Signed URL should have signature before the path
-        self::assertMatchesRegularExpression('#^' . preg_quote(self::BASE_URL, '#') . '/[A-Za-z0-9_-]+/#', $url);
+        $this->assertMatchesRegularExpression('#^' . preg_quote(self::BASE_URL, '#') . '/[A-Za-z0-9_-]+/#', $url);
     }
 
     public function testBuildWithQualityOption(): void
@@ -79,7 +79,7 @@ final class ImgproxyUrlBuilderTest extends TestCase
             'quality' => 85,
         ]);
 
-        self::assertStringContainsString('quality:85', $url);
+        $this->assertStringContainsString('quality:85', $url);
     }
 
     public function testBuildWithFormatOption(): void
@@ -94,7 +94,7 @@ final class ImgproxyUrlBuilderTest extends TestCase
             'format' => 'webp',
         ]);
 
-        self::assertStringContainsString('format:webp', $url);
+        $this->assertStringContainsString('format:webp', $url);
     }
 
     public function testBuildWithBackgroundOption(): void
@@ -109,7 +109,7 @@ final class ImgproxyUrlBuilderTest extends TestCase
             'background' => '#ffffff',
         ]);
 
-        self::assertStringContainsString('background:ffffff', $url);
+        $this->assertStringContainsString('background:ffffff', $url);
     }
 
     public function testBuildWithRotateOption(): void
@@ -124,7 +124,7 @@ final class ImgproxyUrlBuilderTest extends TestCase
             'rotate' => 90,
         ]);
 
-        self::assertStringContainsString('rotate:90', $url);
+        $this->assertStringContainsString('rotate:90', $url);
     }
 
     public function testBuildWithAutoRotateOption(): void
@@ -139,7 +139,7 @@ final class ImgproxyUrlBuilderTest extends TestCase
             'auto_rotate' => true,
         ]);
 
-        self::assertStringContainsString('auto_rotate:1', $url);
+        $this->assertStringContainsString('auto_rotate:1', $url);
     }
 
     public function testBuildWithGravityOption(): void
@@ -154,7 +154,7 @@ final class ImgproxyUrlBuilderTest extends TestCase
             'gravity' => 'ce',
         ]);
 
-        self::assertStringContainsString('gravity:ce', $url);
+        $this->assertStringContainsString('gravity:ce', $url);
     }
 
     public function testBuildWithEnlargeOption(): void
@@ -171,7 +171,7 @@ final class ImgproxyUrlBuilderTest extends TestCase
             'enlarge' => 1,
         ]);
 
-        self::assertStringContainsString('size:300:200:1', $url);
+        $this->assertStringContainsString('size:300:200:1', $url);
     }
 
     public function testBuildWithAbsoluteSourceUrl(): void
@@ -186,7 +186,7 @@ final class ImgproxyUrlBuilderTest extends TestCase
         $url = $builder->build($absoluteUrl);
 
         $encodedUrl = rtrim(strtr(base64_encode($absoluteUrl), '+/', '-_'), '=');
-        self::assertStringContainsString($encodedUrl, $url);
+        $this->assertStringContainsString($encodedUrl, $url);
     }
 
     public function testBuildWithEmptyPrefix(): void
@@ -201,7 +201,7 @@ final class ImgproxyUrlBuilderTest extends TestCase
 
         $expectedSourceUrl = self::SOURCE_BASE_URL . '/product.jpg';
         $encodedUrl = rtrim(strtr(base64_encode($expectedSourceUrl), '+/', '-_'), '=');
-        self::assertStringContainsString($encodedUrl, $url);
+        $this->assertStringContainsString($encodedUrl, $url);
     }
 
     public function testBuildTrimsSlashesFromUrls(): void
@@ -215,12 +215,12 @@ final class ImgproxyUrlBuilderTest extends TestCase
         $url = $builder->build('/product.jpg');
 
         // Builder should handle trailing/leading slashes gracefully
-        self::assertStringStartsWith(self::BASE_URL . '/insecure/', $url);
+        $this->assertStringStartsWith(self::BASE_URL . '/insecure/', $url);
 
         // Source URL should be properly encoded
         $expectedSourceUrl = self::SOURCE_BASE_URL . '/' . self::SOURCE_PREFIX . '/product.jpg';
         $encodedUrl = rtrim(strtr(base64_encode($expectedSourceUrl), '+/', '-_'), '=');
-        self::assertStringContainsString($encodedUrl, $url);
+        $this->assertStringContainsString($encodedUrl, $url);
     }
 
     public function testBuildWithMultipleOptions(): void
@@ -240,10 +240,10 @@ final class ImgproxyUrlBuilderTest extends TestCase
             'auto_rotate' => true,
         ]);
 
-        self::assertStringContainsString('resize:fill', $url);
-        self::assertStringContainsString('size:300:200', $url);
-        self::assertStringContainsString('quality:85', $url);
-        self::assertStringContainsString('format:webp', $url);
-        self::assertStringContainsString('auto_rotate:1', $url);
+        $this->assertStringContainsString('resize:fill', $url);
+        $this->assertStringContainsString('size:300:200', $url);
+        $this->assertStringContainsString('quality:85', $url);
+        $this->assertStringContainsString('format:webp', $url);
+        $this->assertStringContainsString('auto_rotate:1', $url);
     }
 }

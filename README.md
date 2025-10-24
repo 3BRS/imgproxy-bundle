@@ -235,6 +235,8 @@ make ecs              # Check code style
 make ecs-fix          # Fix code style issues
 make phpstan          # Run static analysis
 make deptrac          # Run architecture analysis (requires PHP 8.1+)
+make rector           # Check for automated refactoring opportunities
+make rector-fix       # Apply automated refactorings
 make audit            # Check for security vulnerabilities (optional)
 make bash             # Connect to PHP container
 ```
@@ -271,6 +273,27 @@ make phpunit-coverage
 **Current Test Coverage:**
 - `ImgproxyUrlBuilder` - URL generation, signing, options handling
 - More tests coming soon...
+
+### Code Modernization with Rector
+
+Rector automatically refactors code to modern PHP standards:
+
+```bash
+# Check for refactoring opportunities
+make rector
+
+# Apply automated improvements
+make rector-fix
+```
+
+**What Rector improves:**
+- ✅ Constructor property promotion (PHP 8.0+)
+- ✅ Early returns for better readability
+- ✅ Type declarations
+- ✅ Dead code removal
+- ✅ Symfony/PHPUnit best practices
+
+**Note:** Rector maintains PHP 8.0 compatibility while using modern syntax.
 
 ### Security Audit
 
@@ -331,10 +354,21 @@ We welcome contributions! Please follow these guidelines:
 
 ### Code Quality Standards
 
-- Follow PSR-12 coding standards
-- Ensure PHPStan passes at level 8
+All contributions must pass our quality gates:
+
+- **PSR-12** coding standards (enforced by ECS)
+- **PHPStan level 8** static analysis
+- **Deptrac** architecture validation (PHP 8.1+)
+- **Rector** code modernization (optional but recommended)
 - Write meaningful commit messages
 - Add tests for new features
+
+**Before submitting:**
+```bash
+make test         # Run all quality checks
+make rector       # Check for refactoring opportunities
+make rector-fix   # Apply automated improvements (optional)
+```
 
 ## License
 

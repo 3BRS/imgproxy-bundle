@@ -53,6 +53,12 @@ phpstan-baseline: ## Generate PHPStan baseline
 deptrac: ## Run Deptrac architecture analysis (requires PHP 8.1+)
 	docker compose exec php composer deptrac
 
+rector: ## Check code for automated refactoring opportunities
+	docker compose exec php composer rector
+
+rector-fix: ## Apply automated refactorings
+	docker compose exec php composer rector-fix
+
 build: ## Rebuild Docker images
 	docker compose build --no-cache
 
