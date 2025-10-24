@@ -232,6 +232,7 @@ make test             # Run all tests (ECS + PHPStan)
 make ecs              # Check code style
 make ecs-fix          # Fix code style issues
 make phpstan          # Run static analysis
+make audit            # Check for security vulnerabilities (optional)
 make bash             # Connect to PHP container
 ```
 
@@ -247,6 +248,28 @@ make test
 make ecs              # Code style check
 make phpstan          # Static analysis
 ```
+
+### Security Audit
+
+**Note:** Security audit is primarily useful for **applications**, not libraries/bundles.
+
+This bundle doesn't commit `composer.lock`, so the audit only checks development dependencies.
+
+**For bundle developers:**
+```bash
+make audit  # Optional: checks dev dependencies (PHPStan, ECS, etc.)
+```
+
+**For application developers using this bundle:**
+
+Always run security audit in your **application** to check all dependencies including this bundle:
+
+```bash
+# In your Symfony application
+composer audit
+```
+
+The audit checks dependencies against the [PHP Security Advisories Database](https://github.com/FriendsOfPHP/security-advisories).
 
 ### Continuous Integration
 

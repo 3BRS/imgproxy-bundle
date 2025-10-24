@@ -27,6 +27,9 @@ test: ## Run all tests (ECS + PHPStan)
 	docker compose exec php composer ecs
 	docker compose exec php composer phpstan
 
+audit: ## Check for security vulnerabilities (dev dependencies only)
+	docker compose exec php composer audit
+
 ecs: ## Check code style
 	docker compose exec php composer ecs
 
