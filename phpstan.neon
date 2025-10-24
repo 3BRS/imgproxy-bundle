@@ -1,0 +1,11 @@
+parameters:
+    level: 8
+    paths:
+        - src
+
+    # Ignore errors from vendor
+    excludePaths:
+        - vendor
+
+    # Type coverage
+    reportUnmatchedIgnoredErrors: false

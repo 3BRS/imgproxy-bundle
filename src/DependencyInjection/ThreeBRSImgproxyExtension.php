@@ -32,6 +32,9 @@ final class ThreeBRSImgproxyExtension extends Extension
         $loader->load('services.yaml');
     }
 
+    /**
+     * @param array<int, mixed> $config
+     */
     public function getConfiguration(array $config, ContainerBuilder $container): ConfigurationInterface
     {
         return new Configuration();
