@@ -228,12 +228,13 @@ Run `make help` to see all available commands:
 
 ```bash
 make install          # Install composer dependencies
-make test             # Run all tests (PHPUnit + ECS + PHPStan)
+make test             # Run all tests (PHPUnit + ECS + PHPStan + Deptrac)
 make phpunit          # Run PHPUnit tests
 make phpunit-coverage # Run tests with coverage report
 make ecs              # Check code style
 make ecs-fix          # Fix code style issues
 make phpstan          # Run static analysis
+make deptrac          # Run architecture analysis (requires PHP 8.1+)
 make audit            # Check for security vulnerabilities (optional)
 make bash             # Connect to PHP container
 ```
@@ -250,6 +251,7 @@ make test
 make phpunit          # Unit tests
 make ecs              # Code style check
 make phpstan          # Static analysis
+make deptrac          # Architecture analysis (PHP 8.1+)
 ```
 
 ### Unit Tests
@@ -304,6 +306,16 @@ Each CI build runs:
 1. **PHPUnit** - Unit tests
 2. **ECS** - Code style checks
 3. **PHPStan** - Static analysis (level 8)
+4. **Deptrac** - Architecture validation (PHP 8.1+ only)
+
+**Architecture Layers:**
+
+The project uses Deptrac to enforce clean architecture:
+- **Bundle** - Main bundle class (can depend on all layers)
+- **DependencyInjection** - Service configuration (can depend on Imagine)
+- **Imagine** - Core business logic (independent, no external dependencies)
+
+*Note: Deptrac requires PHP 8.1+ and is automatically skipped on PHP 8.0 builds.*
 
 ## Contributing
 

@@ -27,7 +27,7 @@ test: ## Run all tests (PHPUnit + ECS + PHPStan + Deptrac)
 	docker compose exec php vendor/bin/phpunit --no-coverage
 	docker compose exec php composer ecs
 	docker compose exec php composer phpstan
-	docker compose exec php composer deptrac
+	@docker compose exec php bash -c 'if [ -f vendor/bin/deptrac ]; then composer deptrac; else echo "Deptrac skipped (requires PHP 8.1+)"; fi'
 
 phpunit: ## Run PHPUnit tests
 	docker compose exec php vendor/bin/phpunit --no-coverage
@@ -50,7 +50,7 @@ phpstan: ## Run PHPStan static analysis
 phpstan-baseline: ## Generate PHPStan baseline
 	docker compose exec php composer phpstan-baseline
 
-deptrac: ## Run Deptrac architecture analysis
+deptrac: ## Run Deptrac architecture analysis (requires PHP 8.1+)
 	docker compose exec php composer deptrac
 
 build: ## Rebuild Docker images

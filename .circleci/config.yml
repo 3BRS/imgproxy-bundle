@@ -39,14 +39,28 @@ jobs:
                     xargs printf '%s:<< parameters.symfony_version >>.* ' | \
                     xargs composer require --no-interaction --no-update || true
 
+            # Remove deptrac on PHP 8.0 (requires PHP 8.1+)
+            -   run: |
+                    if [ "<< parameters.php_version >>" = "8.0" ]; then
+                        composer remove deptrac/deptrac --dev --no-update --no-interaction
+                    fi
+
             # Test with prefer-lowest (oldest compatible dependencies)
             -   run: composer update --no-interaction --prefer-lowest --prefer-stable
             -   run: vendor/bin/phpunit --no-coverage
             -   run: composer ecs
             -   run: composer phpstan
+            -   run: |
+                    if [ -f vendor/bin/deptrac ]; then
+                        composer deptrac
+                    fi
 
             # Test with prefer-stable (latest compatible dependencies)
             -   run: composer update --no-interaction --prefer-stable
             -   run: vendor/bin/phpunit --no-coverage
             -   run: composer ecs
             -   run: composer phpstan
+            -   run: |
+                    if [ -f vendor/bin/deptrac ]; then
+                        composer deptrac
+                    fi
