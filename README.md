@@ -228,10 +228,16 @@ Run `make help` to see all available commands:
 
 ```bash
 make install          # Install composer dependencies
-make test             # Run all tests (ECS + PHPStan)
+make test             # Run all tests (PHPUnit + ECS + PHPStan + Deptrac)
+make phpunit          # Run PHPUnit tests
+make phpunit-coverage # Run tests with coverage report
 make ecs              # Check code style
 make ecs-fix          # Fix code style issues
 make phpstan          # Run static analysis
+make deptrac          # Run architecture analysis (requires PHP 8.1+)
+make rector           # Check for automated refactoring opportunities
+make rector-fix       # Apply automated refactorings
+make audit            # Check for security vulnerabilities (optional)
 make bash             # Connect to PHP container
 ```
 
@@ -244,9 +250,75 @@ Run the complete test suite:
 make test
 
 # Or run individually
+make phpunit          # Unit tests
 make ecs              # Code style check
 make phpstan          # Static analysis
+make deptrac          # Architecture analysis (PHP 8.1+)
 ```
+
+### Unit Tests
+
+The project uses PHPUnit for unit testing:
+
+```bash
+# Run tests
+make phpunit
+
+# Generate HTML coverage report
+make phpunit-coverage
+
+# Coverage report will be in var/coverage/index.html
+```
+
+**Current Test Coverage:**
+- `ImgproxyUrlBuilder` - URL generation, signing, options handling
+- More tests coming soon...
+
+### Code Modernization with Rector
+
+Rector automatically refactors code to modern PHP standards:
+
+```bash
+# Check for refactoring opportunities
+make rector
+
+# Apply automated improvements
+make rector-fix
+```
+
+**What Rector improves:**
+- ✅ Constructor property promotion (PHP 8.0+)
+- ✅ Early returns for better readability
+- ✅ Type declarations
+- ✅ Dead code removal
+- ✅ Symfony/PHPUnit best practices
+
+**Notes:**
+- Rector maintains PHP 8.0 compatibility while using modern syntax
+- Rector requires PHPStan 1.x, which doesn't support PHP 8.4
+- On PHP 8.4, use PHPStan 2.x instead (Rector will be unavailable)
+
+### Security Audit
+
+**Note:** Security audit is primarily useful for **applications**, not libraries/bundles.
+
+This bundle doesn't commit `composer.lock`, so the audit only checks development dependencies.
+
+**For bundle developers:**
+```bash
+make audit  # Optional: checks dev dependencies (PHPStan, ECS, etc.)
+```
+
+**For application developers using this bundle:**
+
+Always run security audit in your **application** to check all dependencies including this bundle:
+
+```bash
+# In your Symfony application
+composer audit
+```
+
+The audit checks dependencies against the [PHP Security Advisories Database](https://github.com/FriendsOfPHP/security-advisories).
 
 ### Continuous Integration
 
@@ -255,6 +327,24 @@ The project uses CircleCI to test against multiple PHP and Symfony versions:
 - **PHP versions**: 8.0, 8.1, 8.2, 8.3, 8.4
 - **Symfony versions**: 5.4, 6.4, 7.1
 - **Dependency strategies**: `--prefer-lowest` and `--prefer-stable`
+
+Each CI build runs:
+1. **PHPUnit** - Unit tests
+2. **ECS** - Code style checks
+3. **PHPStan** - Static analysis (level 8)
+4. **Deptrac** - Architecture validation (PHP 8.1+ only)
+5. **Rector** - Code modernization checks (PHP 8.0-8.3)
+
+**Architecture Layers:**
+
+The project uses Deptrac to enforce clean architecture:
+- **Bundle** - Main bundle class (can depend on all layers)
+- **DependencyInjection** - Service configuration (can depend on Imagine)
+- **Imagine** - Core business logic (independent, no external dependencies)
+
+**Version-specific tools:**
+- **PHP 8.0**: Deptrac skipped (requires PHP 8.1+)
+- **PHP 8.4**: Rector skipped (PHPStan 2.x required for PHP 8.4, which conflicts with Rector 1.x)
 
 ## Contributing
 
@@ -270,10 +360,21 @@ We welcome contributions! Please follow these guidelines:
 
 ### Code Quality Standards
 
-- Follow PSR-12 coding standards
-- Ensure PHPStan passes at level 8
+All contributions must pass our quality gates:
+
+- **PSR-12** coding standards (enforced by ECS)
+- **PHPStan level 8** static analysis
+- **Deptrac** architecture validation (PHP 8.1+)
+- **Rector** code modernization (optional but recommended)
 - Write meaningful commit messages
 - Add tests for new features
+
+**Before submitting:**
+```bash
+make test         # Run all quality checks
+make rector       # Check for refactoring opportunities
+make rector-fix   # Apply automated improvements (optional)
+```
 
 ## License
 

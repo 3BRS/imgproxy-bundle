@@ -11,11 +11,8 @@ use Liip\ImagineBundle\Imagine\Filter\FilterConfiguration;
  */
 class FilterConfigConverter implements FilterConfigConverterInterface
 {
-    private FilterConfiguration $filterConfig;
-
-    public function __construct(FilterConfiguration $filterConfig)
+    public function __construct(private FilterConfiguration $filterConfig)
     {
-        $this->filterConfig = $filterConfig;
     }
 
     /**
@@ -42,7 +39,7 @@ class FilterConfigConverter implements FilterConfigConverterInterface
 
         // Process filters
         if (isset($config['filters']) && is_array($config['filters'])) {
-            $options = array_merge($options, $this->convertFilters($config['filters']));
+            return array_merge($options, $this->convertFilters($config['filters']));
         }
 
         return $options;
@@ -130,15 +127,8 @@ class FilterConfigConverter implements FilterConfigConverterInterface
 
                     break;
                 case 'strip':
-                    // imgproxy strips metadata by default
-                    break;
                 case 'interlace':
-                    // imgproxy enables progressive JPEG and interlaced PNG by default
-                    break;
                 case 'paste':
-                    // Not supported by imgproxy - complex operation
-                    // Would need fallback to Liip Imagine processing
-                    break;
                 case 'resample':
                     // DPI changes are not relevant for web images
                     break;
@@ -395,14 +385,7 @@ class FilterConfigConverter implements FilterConfigConverterInterface
         // imgproxy doesn't have direct flip support
         // We'll use a workaround: combine rotate and flip when imgproxy adds support
         // For now, we note this limitation
-        if ($axis === 'x') {
-            // Horizontal flip - not directly supported
-            // Could be approximated with rotate:180 but that's not the same
-            $options['_note'] = 'horizontal_flip_not_supported';
-        } else {
-            // Vertical flip - not directly supported
-            $options['_note'] = 'vertical_flip_not_supported';
-        }
+        $options['_note'] = $axis === 'x' ? 'horizontal_flip_not_supported' : 'vertical_flip_not_supported';
 
         return $options;
     }

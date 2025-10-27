@@ -14,16 +14,8 @@ use ThreeBRS\ImgproxyBundle\Imagine\ImgproxyUrlBuilderInterface;
  */
 class ImgproxyCacheResolver implements ResolverInterface
 {
-    private ImgproxyUrlBuilderInterface $urlBuilder;
-
-    private FilterConfigConverterInterface $configConverter;
-
-    public function __construct(
-        ImgproxyUrlBuilderInterface $urlBuilder,
-        FilterConfigConverterInterface $configConverter,
-    ) {
-        $this->urlBuilder = $urlBuilder;
-        $this->configConverter = $configConverter;
+    public function __construct(private ImgproxyUrlBuilderInterface $urlBuilder, private FilterConfigConverterInterface $configConverter)
+    {
     }
 
     public function isStored($path, $filter): bool
