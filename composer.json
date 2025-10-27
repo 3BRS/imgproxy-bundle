@@ -25,20 +25,37 @@
     },
     "require-dev": {
         "symplify/easy-coding-standard": "^12.1",
-        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan": "^1.10|^2.0",
         "phpstan/extension-installer": "^1.4",
-        "phpstan/phpstan-symfony": "^2.0"
+        "phpstan/phpstan-symfony": "^1.3|^2.0",
+        "phpunit/phpunit": "^9.6|^10.0|^11.0",
+        "deptrac/deptrac": "^2.0",
+        "rector/rector": "^1.0",
+        "symfony/yaml": "^5.4 || ^6.0 || ^7.0"
     },
     "autoload": {
         "psr-4": {
             "ThreeBRS\\ImgproxyBundle\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "ThreeBRS\\ImgproxyBundle\\Tests\\": "tests/"
+        }
+    },
     "scripts": {
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-html=var/coverage",
         "ecs": "ecs check",
         "ecs-fix": "ecs check --fix",
         "phpstan": "phpstan analyse",
-        "phpstan-baseline": "phpstan analyse --generate-baseline"
+        "phpstan-baseline": "phpstan analyse --generate-baseline",
+        "deptrac": "deptrac analyse --cache-file=var/cache/deptrac.cache",
+        "rector": "rector process --dry-run",
+        "rector-fix": "rector process"
+    },
+    "suggest": {
+        "infection/infection": "Mutation testing framework (requires PHP 8.1+)"
     },
     "extra": {
         "branch-alias": {

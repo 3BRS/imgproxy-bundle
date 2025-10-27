@@ -39,12 +39,43 @@ jobs:
                     xargs printf '%s:<< parameters.symfony_version >>.* ' | \
                     xargs composer require --no-interaction --no-update || true
 
+            # Adjust dependencies based on PHP version
+            -   run: |
+                    # Remove deptrac on PHP 8.0 (requires PHP 8.1+)
+                    if [ "<< parameters.php_version >>" = "8.0" ]; then
+                        composer remove deptrac/deptrac --dev --no-update --no-interaction
+                    fi
+
+                    # On PHP 8.4: Upgrade PHPStan to 2.x and remove Rector (PHPStan 1.x doesn't support PHP 8.4)
+                    if [ "<< parameters.php_version >>" = "8.4" ]; then
+                        composer remove rector/rector --dev --no-update --no-interaction
+                        composer require phpstan/phpstan:"^2.0" phpstan/phpstan-symfony:"^2.0" --dev --no-update --no-interaction
+                    fi
+
             # Test with prefer-lowest (oldest compatible dependencies)
             -   run: composer update --no-interaction --prefer-lowest --prefer-stable
+            -   run: vendor/bin/phpunit --no-coverage
             -   run: composer ecs
             -   run: composer phpstan
+            -   run: |
+                    if [ -f vendor/bin/deptrac ]; then
+                        composer deptrac
+                    fi
+            -   run: |
+                    if [ -f vendor/bin/rector ]; then
+                        composer rector
+                    fi
 
             # Test with prefer-stable (latest compatible dependencies)
             -   run: composer update --no-interaction --prefer-stable
+            -   run: vendor/bin/phpunit --no-coverage
             -   run: composer ecs
             -   run: composer phpstan
+            -   run: |
+                    if [ -f vendor/bin/deptrac ]; then
+                        composer deptrac
+                    fi
+            -   run: |
+                    if [ -f vendor/bin/rector ]; then
+                        composer rector
+                    fi

@@ -11,10 +11,6 @@ class ImgproxyUrlBuilder implements ImgproxyUrlBuilderInterface
 {
     private string $baseUrl;
 
-    private ?string $key;
-
-    private ?string $salt;
-
     private string $sourceBaseUrl;
 
     private string $sourcePrefix;
@@ -23,14 +19,12 @@ class ImgproxyUrlBuilder implements ImgproxyUrlBuilderInterface
         string $baseUrl,
         string $sourceBaseUrl,
         string $sourcePrefix = '',
-        ?string $key = null,
-        ?string $salt = null,
+        private ?string $key = null,
+        private ?string $salt = null,
     ) {
         $this->baseUrl = rtrim($baseUrl, '/');
         $this->sourceBaseUrl = rtrim($sourceBaseUrl, '/');
         $this->sourcePrefix = trim($sourcePrefix, '/');
-        $this->key = $key;
-        $this->salt = $salt;
     }
 
     /**
