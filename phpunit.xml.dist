@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
          bootstrap="vendor/autoload.php"
          colors="true"
-         cacheDirectory="var/cache/phpunit"
+         cacheResultFile="var/cache/phpunit/.phpunit.result.cache"
          failOnWarning="false"
          failOnRisky="false"
          beStrictAboutOutputDuringTests="false">
 
     <testsuites>
-        <testsuite name="Imgproxy Bundle Test Suite">
-            <directory>tests</directory>
+        <testsuite name="Unit Tests">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Integration Tests">
+            <directory>tests/Integration</directory>
         </testsuite>
     </testsuites>
 
-    <coverage>
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory>src</directory>
+        </include>
         <report>
             <html outputDirectory="var/coverage"/>
         </report>
     </coverage>
-
-    <source>
-        <include>
-            <directory>src</directory>
-        </include>
-    </source>
 </phpunit>

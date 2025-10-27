@@ -26,6 +26,11 @@ services:
     ThreeBRS\ImgproxyBundle\Imagine\Filter\FilterConfigConverterInterface:
         alias: ThreeBRS\ImgproxyBundle\Imagine\Filter\FilterConfigConverter
 
+    # Named alias for filter converter (for easier service access in tests)
+    threebrs_imgproxy.filter_converter:
+        alias: ThreeBRS\ImgproxyBundle\Imagine\Filter\FilterConfigConverter
+        public: true
+
     # Cache Resolver
     ThreeBRS\ImgproxyBundle\Imagine\Cache\Resolver\ImgproxyCacheResolver:
         tags:

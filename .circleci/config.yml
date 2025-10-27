@@ -35,7 +35,7 @@ jobs:
             # Install specific Symfony version
             -   run: |
                     grep -o -E '"(symfony/[^"]+)"' composer.json | \
-                    grep -v -E '(symfony/flex)' | \
+                    grep -v -E '(symfony/flex|symfony/translation-contracts)' | \
                     xargs printf '%s:<< parameters.symfony_version >>.* ' | \
                     xargs composer require --no-interaction --no-update || true
 

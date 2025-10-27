@@ -21,6 +21,8 @@
         "symfony/config": "^5.4 || ^6.0 || ^7.0",
         "symfony/dependency-injection": "^5.4 || ^6.0 || ^7.0",
         "symfony/http-kernel": "^5.4 || ^6.0 || ^7.0",
+        "symfony/string": "^5.4 || ^6.0 || ^7.0",
+        "symfony/translation-contracts": "^2.5 || ^3.0",
         "liip/imagine-bundle": "^2.0"
     },
     "require-dev": {
@@ -45,6 +47,8 @@
     },
     "scripts": {
         "test": "phpunit",
+        "test-unit": "phpunit --testsuite=\"Unit Tests\"",
+        "test-integration": "phpunit --testsuite=\"Integration Tests\"",
         "test-coverage": "phpunit --coverage-html=var/coverage",
         "ecs": "ecs check",
         "ecs-fix": "ecs check --fix",

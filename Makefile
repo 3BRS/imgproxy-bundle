@@ -1,4 +1,4 @@
-.PHONY: help up down restart bash composer install ecs ecs-fix
+.PHONY: help up down restart bash composer install ecs ecs-fix phpunit phpunit-unit phpunit-integration
 
 help: ## Show help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
@@ -31,6 +31,12 @@ test: ## Run all tests (PHPUnit + ECS + PHPStan + Deptrac)
 
 phpunit: ## Run PHPUnit tests
 	docker compose exec php vendor/bin/phpunit --no-coverage
+
+phpunit-unit: ## Run only unit tests
+	docker compose exec php composer test-unit
+
+phpunit-integration: ## Run only integration tests
+	docker compose exec php composer test-integration
 
 phpunit-coverage: ## Run PHPUnit with coverage report
 	docker compose exec -e XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-html=var/coverage
