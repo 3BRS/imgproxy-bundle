@@ -27,12 +27,12 @@
 - 🔒 **Secure** - URL signing support to prevent unauthorized image transformations
 - 📦 **S3/CDN ready** - works seamlessly with cloud storage
 - 🎨 **Full filter support** - supports 13/17 Liip Imagine filters (76% compatibility)
-- 🔧 **Smart detection** - automatically skips static assets (webpack builds)
+- 🔧 **Static asset detection** - automatically skips webpack builds and bundles
 
 ## Requirements
 
-- PHP 8.0 or higher
-- Symfony 5.4, 6.x, or 7.x
+- PHP 8.0, 8.1, 8.2, 8.3, or 8.4
+- Symfony 5.4, 6.4, or 7.1
 - Liip Imagine Bundle 2.x
 - Running imgproxy server
 
@@ -87,8 +87,17 @@ In `config/packages/liip_imagine.yaml`, change the cache resolver:
 
 ```yaml
 liip_imagine:
-    # ... other config
-    cache: imgproxy  # Change from 'default' or your current resolver
+    resolvers:
+        imgproxy:
+            # Resolver is auto-configured by the bundle
+
+    cache: imgproxy  # Change from 'default' to use imgproxy resolver
+
+    filter_sets:
+        # Your existing filter sets...
+        thumbnail:
+            filters:
+                thumbnail: { size: [300, 200], mode: outbound }
 ```
 
 ### Step 6: Clear cache
@@ -256,13 +265,19 @@ make phpstan          # Static analysis
 make deptrac          # Architecture analysis (PHP 8.1+)
 ```
 
-### Unit Tests
+### Test Suite
 
-The project uses PHPUnit for unit testing:
+The project has comprehensive test coverage with 106 tests and 381 assertions:
 
 ```bash
-# Run tests
+# Run all tests
 make phpunit
+
+# Run only unit tests
+make phpunit-unit
+
+# Run only integration tests
+make phpunit-integration
 
 # Generate HTML coverage report
 make phpunit-coverage
@@ -270,9 +285,11 @@ make phpunit-coverage
 # Coverage report will be in var/coverage/index.html
 ```
 
-**Current Test Coverage:**
-- `ImgproxyUrlBuilder` - URL generation, signing, options handling
-- More tests coming soon...
+**Test Coverage:**
+- ✅ **Unit Tests** - All components (URL builder, filter converter, cache resolver)
+- ✅ **Integration Tests** - Full Symfony kernel with Liip Imagine integration
+- ✅ **106 tests** with **381 assertions** (100% passing)
+- ✅ **Infection mutation testing** for code quality verification
 
 ### Code Modernization with Rector
 
@@ -329,11 +346,12 @@ The project uses CircleCI to test against multiple PHP and Symfony versions:
 - **Dependency strategies**: `--prefer-lowest` and `--prefer-stable`
 
 Each CI build runs:
-1. **PHPUnit** - Unit tests
-2. **ECS** - Code style checks
+1. **PHPUnit** - 106 tests with 381 assertions (unit + integration)
+2. **ECS** - Code style checks (PSR-12)
 3. **PHPStan** - Static analysis (level 8)
 4. **Deptrac** - Architecture validation (PHP 8.1+ only)
 5. **Rector** - Code modernization checks (PHP 8.0-8.3)
+6. **Infection** - Mutation testing for code quality
 
 **Architecture Layers:**
 
