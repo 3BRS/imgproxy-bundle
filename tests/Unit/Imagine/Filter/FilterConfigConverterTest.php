@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace ThreeBRS\ImgproxyBundle\Tests\Unit\Imagine\Filter;
 
 use Liip\ImagineBundle\Imagine\Filter\FilterConfiguration;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ThreeBRS\ImgproxyBundle\Imagine\Filter\FilterConfigConverter;
 use ThreeBRS\ImgproxyBundle\Imagine\Filter\FilterConfigConverterInterface;
 
 final class FilterConfigConverterTest extends TestCase
 {
-    private FilterConfiguration $filterConfig;
+    private FilterConfiguration&MockObject $filterConfig;
     private FilterConfigConverter $converter;
 
     protected function setUp(): void
@@ -496,9 +498,7 @@ final class FilterConfigConverterTest extends TestCase
         $this->assertSame('ce', $result['watermark_position']);
     }
 
-    /**
-     * @dataProvider watermarkPositionProvider
-     */
+    #[DataProvider('watermarkPositionProvider')]
     public function testConvertWatermarkPosition(string $liipPosition, string $expectedImgproxyPosition): void
     {
         $this->filterConfig

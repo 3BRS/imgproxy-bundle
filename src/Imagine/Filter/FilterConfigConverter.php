@@ -11,7 +11,7 @@ use Liip\ImagineBundle\Imagine\Filter\FilterConfiguration;
  */
 class FilterConfigConverter implements FilterConfigConverterInterface
 {
-    public function __construct(private FilterConfiguration $filterConfig)
+    public function __construct(private readonly FilterConfiguration $filterConfig)
     {
     }
 

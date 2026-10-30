@@ -27,7 +27,7 @@ test: ## Run all tests (PHPUnit + ECS + PHPStan + Deptrac)
 	docker compose exec php vendor/bin/phpunit --no-coverage
 	docker compose exec php composer ecs
 	docker compose exec php composer phpstan
-	@docker compose exec php bash -c 'if [ -f vendor/bin/deptrac ]; then composer deptrac; else echo "Deptrac skipped (requires PHP 8.1+)"; fi'
+	docker compose exec php composer deptrac
 
 phpunit: ## Run PHPUnit tests
 	docker compose exec php vendor/bin/phpunit --no-coverage
@@ -56,7 +56,7 @@ phpstan: ## Run PHPStan static analysis
 phpstan-baseline: ## Generate PHPStan baseline
 	docker compose exec php composer phpstan-baseline
 
-deptrac: ## Run Deptrac architecture analysis (requires PHP 8.1+)
+deptrac: ## Run Deptrac architecture analysis
 	docker compose exec php composer deptrac
 
 rector: ## Check code for automated refactoring opportunities
@@ -65,7 +65,7 @@ rector: ## Check code for automated refactoring opportunities
 rector-fix: ## Apply automated refactorings
 	docker compose exec php composer rector-fix
 
-infection: ## Run mutation testing (requires PHP 8.1+ and infection package)
+infection: ## Run mutation testing (requires the infection package)
 	docker compose exec -e XDEBUG_MODE=coverage php vendor/bin/infection --threads=4
 
 build: ## Rebuild Docker images

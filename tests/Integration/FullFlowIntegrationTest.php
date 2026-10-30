@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace ThreeBRS\ImgproxyBundle\Tests\Integration;
 
-use Liip\ImagineBundle\Binary\BinaryInterface;
 use ThreeBRS\ImgproxyBundle\Imagine\Cache\Resolver\ImgproxyCacheResolver;
 use ThreeBRS\ImgproxyBundle\Imagine\Filter\FilterConfigConverterInterface;
 use ThreeBRS\ImgproxyBundle\Imagine\ImgproxyUrlBuilderInterface;

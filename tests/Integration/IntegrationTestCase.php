@@ -101,6 +101,12 @@ abstract class IntegrationTestCase extends TestCase
 
     /**
      * Get service from container
+     *
+     * @template T of object
+     *
+     * @param class-string<T>|string $id
+     *
+     * @return ($id is class-string<T> ? T : object|null)
      */
     protected function getService(string $id): ?object
     {

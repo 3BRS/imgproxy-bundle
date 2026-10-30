@@ -14,7 +14,7 @@ use ThreeBRS\ImgproxyBundle\Imagine\ImgproxyUrlBuilderInterface;
  */
 class ImgproxyCacheResolver implements ResolverInterface
 {
-    public function __construct(private ImgproxyUrlBuilderInterface $urlBuilder, private FilterConfigConverterInterface $configConverter)
+    public function __construct(private readonly ImgproxyUrlBuilderInterface $urlBuilder, private readonly FilterConfigConverterInterface $configConverter)
     {
     }
 

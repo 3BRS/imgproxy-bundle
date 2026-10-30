@@ -13,8 +13,8 @@
     <a href="https://packagist.org/packages/3brs/imgproxy-bundle" title="Version">
         <img src="https://img.shields.io/packagist/v/3brs/imgproxy-bundle.svg">
     </a>
-    <a href="https://circleci.com/gh/3BRS/imgproxy-bundle" title="Build Status">
-        <img src="https://circleci.com/gh/3BRS/imgproxy-bundle.svg?style=shield">
+    <a href="https://github.com/3BRS/imgproxy-bundle/actions/workflows/ci.yml" title="Build Status">
+        <img src="https://github.com/3BRS/imgproxy-bundle/actions/workflows/ci.yml/badge.svg">
     </a>
 </p>
 
@@ -31,9 +31,9 @@
 
 ## Requirements
 
-- PHP 8.0, 8.1, 8.2, 8.3, or 8.4
-- Symfony 5.4, 6.4, or 7.1
-- Liip Imagine Bundle 2.x
+- PHP 8.1, 8.2, 8.3, 8.4, or 8.5 (PHP 8.0 is supported by the 1.0.x releases: `composer require 3brs/imgproxy-bundle:~1.0.0`)
+- Symfony 5.4, 6.x, 7.x, or 8.x (Symfony 8 requires PHP 8.4+)
+- Liip Imagine Bundle 2.x (Symfony 8 requires 2.16+)
 - Running imgproxy server
 
 ## Installation
@@ -221,14 +221,10 @@ git clone https://github.com/3BRS/imgproxy-bundle.git
 cd imgproxy-bundle
 ```
 
-2. Install dependencies:
-```bash
-composer install
-```
-
-3. Start Docker environment:
+2. Start the Docker environment (PHP 8.5) and install dependencies:
 ```bash
 make up
+make install
 ```
 
 ### Available Make Commands
@@ -243,7 +239,7 @@ make phpunit-coverage # Run tests with coverage report
 make ecs              # Check code style
 make ecs-fix          # Fix code style issues
 make phpstan          # Run static analysis
-make deptrac          # Run architecture analysis (requires PHP 8.1+)
+make deptrac          # Run architecture analysis
 make rector           # Check for automated refactoring opportunities
 make rector-fix       # Apply automated refactorings
 make audit            # Check for security vulnerabilities (optional)
@@ -259,10 +255,10 @@ Run the complete test suite:
 make test
 
 # Or run individually
-make phpunit          # Unit tests
+make phpunit          # Unit and integration tests
 make ecs              # Code style check
 make phpstan          # Static analysis
-make deptrac          # Architecture analysis (PHP 8.1+)
+make deptrac          # Architecture analysis
 ```
 
 ### Test Suite
@@ -311,9 +307,7 @@ make rector-fix
 - ✅ Symfony/PHPUnit best practices
 
 **Notes:**
-- Rector maintains PHP 8.0 compatibility while using modern syntax
-- Rector requires PHPStan 1.x, which doesn't support PHP 8.4
-- On PHP 8.4, use PHPStan 2.x instead (Rector will be unavailable)
+- Rector keeps the code compatible with PHP 8.1, the lowest supported version
 
 ### Security Audit
 
@@ -339,19 +333,27 @@ The audit checks dependencies against the [PHP Security Advisories Database](htt
 
 ### Continuous Integration
 
-The project uses CircleCI to test against multiple PHP and Symfony versions:
+GitHub Actions (`.github/workflows/ci.yml`) runs on pushes and pull requests to `main`, every Monday at 06:00 UTC (so that a new release of a dependency that breaks the bundle shows up without a change in the repository), and manually via `workflow_dispatch`.
 
-- **PHP versions**: 8.0, 8.1, 8.2, 8.3, 8.4
-- **Symfony versions**: 5.4, 6.4, 7.1
-- **Dependency strategies**: `--prefer-lowest` and `--prefer-stable`
+The matrix has one job for every combination of:
 
-Each CI build runs:
-1. **PHPUnit** - 106 tests with 381 assertions (unit + integration)
+- **PHP versions**: 8.1, 8.2, 8.3, 8.4, 8.5
+- **Symfony versions**: 5.4, 6.4, 7.4, 8.x (Symfony 7.4 on PHP 8.2+, 8.x on PHP 8.4+)
+
+Each job installs the dependencies with `--prefer-lowest` and runs the checks, then installs them with `--prefer-stable` and runs the checks again.
+
+Symfony Flex (`SYMFONY_REQUIRE`) restricts all Symfony components, including indirect dependencies, to the tested version. For Symfony 8.x, `--prefer-lowest` installs 8.0 and `--prefer-stable` the latest 8.x release.
+
+The `--prefer-lowest` install sets `COMPOSER_NO_BLOCKING=1` and `COMPOSER_NO_SECURITY_BLOCKING=1`: Composer 2.9+ leaves out versions with security advisories, which would raise the lowest versions.
+
+The job with PHP 8.5 and Symfony 8.x also runs `composer validate --strict`.
+
+The checks are:
+1. **PHPUnit** - 106 tests (unit + integration)
 2. **ECS** - Code style checks (PSR-12)
 3. **PHPStan** - Static analysis (level 8)
-4. **Deptrac** - Architecture validation (PHP 8.1+ only)
-5. **Rector** - Code modernization checks (PHP 8.0-8.3)
-6. **Infection** - Mutation testing for code quality
+4. **Deptrac** - Architecture validation
+5. **Rector** - Code modernization checks
 
 **Architecture Layers:**
 
@@ -359,10 +361,6 @@ The project uses Deptrac to enforce clean architecture:
 - **Bundle** - Main bundle class (can depend on all layers)
 - **DependencyInjection** - Service configuration (can depend on Imagine)
 - **Imagine** - Core business logic (independent, no external dependencies)
-
-**Version-specific tools:**
-- **PHP 8.0**: Deptrac skipped (requires PHP 8.1+)
-- **PHP 8.4**: Rector skipped (PHPStan 2.x required for PHP 8.4, which conflicts with Rector 1.x)
 
 ## Contributing
 
@@ -382,7 +380,7 @@ All contributions must pass our quality gates:
 
 - **PSR-12** coding standards (enforced by ECS)
 - **PHPStan level 8** static analysis
-- **Deptrac** architecture validation (PHP 8.1+)
+- **Deptrac** architecture validation
 - **Rector** code modernization (optional but recommended)
 - Write meaningful commit messages
 - Add tests for new features
