@@ -9,3 +9,10 @@ parameters:
 
     # Type coverage
     reportUnmatchedIgnoredErrors: false
+
+    ignoreErrors:
+        # Symfony 7.4.0 and 8.0.0 declare the TreeBuilder template without a default type
+        -
+            message: '#generic class Symfony\\Component\\Config\\Definition\\Builder\\TreeBuilder does not specify its types: T$#'
+            identifier: missingType.generics
+            path: src/DependencyInjection/Configuration.php

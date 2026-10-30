@@ -1,0 +1,120 @@
+name: CI
+
+on:
+    push:
+        branches: [ main ]
+    pull_request:
+        branches: [ main ]
+    # Tests the latest releases of the dependencies also without a push.
+    schedule:
+        -   cron: "0 6 * * 1"
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+defaults:
+    run:
+        # An explicit bash shell runs with -o pipefail, the default one does not.
+        shell: bash
+
+jobs:
+    test:
+        name: PHP ${{ matrix.php }} / Symfony ${{ matrix.symfony }}
+        runs-on: ubuntu-latest
+
+        strategy:
+            fail-fast: false
+            matrix:
+                php: [ "8.1", "8.2", "8.3", "8.4", "8.5" ]
+                # "8" is pinned as 8.*: the lowest run installs 8.0, the stable run the latest 8.x
+                symfony: [ "5.4", "6.4", "7.4", "8" ]
+                exclude:
+                    # Symfony 7.x requires PHP 8.2+
+                    -   php: "8.1"
+                        symfony: "7.4"
+                    # Symfony 8.x requires PHP 8.4+
+                    -   php: "8.1"
+                        symfony: "8"
+                    -   php: "8.2"
+                        symfony: "8"
+                    -   php: "8.3"
+                        symfony: "8"
+
+        env:
+            # Symfony Flex restricts all Symfony components, including indirect dependencies, to this version
+            SYMFONY_REQUIRE: ${{ matrix.symfony }}.*
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v7
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    extensions: gd
+                    coverage: none
+
+            -   name: Validate composer.json
+                if: matrix.php == '8.5' && matrix.symfony == '8'
+                run: composer validate --strict
+
+            -   name: Install Symfony Flex
+                run: |
+                    composer global config --no-plugins allow-plugins.symfony/flex true
+                    composer global require --no-interaction --no-progress --no-scripts --no-plugins symfony/flex
+
+            -   name: Get the Composer cache directory
+                id: composer-cache
+                run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+            -   name: Cache Composer packages
+                uses: actions/cache@v6
+                with:
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: composer-php${{ matrix.php }}-symfony${{ matrix.symfony }}-${{ hashFiles('composer.json') }}
+                    restore-keys: composer-php${{ matrix.php }}-symfony${{ matrix.symfony }}-
+
+            # Lowest compatible dependencies
+            -   name: Install the lowest dependencies
+                env:
+                    # Composer 2.9+ leaves out versions with security advisories, which would raise the lowest versions.
+                    # Composer 2.10+ reads COMPOSER_NO_BLOCKING, 2.9.2+ reads COMPOSER_NO_SECURITY_BLOCKING.
+                    COMPOSER_NO_BLOCKING: "1"
+                    COMPOSER_NO_SECURITY_BLOCKING: "1"
+                run: composer update --no-interaction --no-progress --prefer-lowest --prefer-stable
+
+            -   name: PHPUnit (lowest)
+                run: vendor/bin/phpunit --no-coverage
+
+            -   name: ECS (lowest)
+                run: composer ecs
+
+            -   name: PHPStan (lowest)
+                run: composer phpstan
+
+            -   name: Deptrac (lowest)
+                run: composer deptrac
+
+            -   name: Rector (lowest)
+                run: composer rector
+
+            # Latest compatible dependencies
+            -   name: Install the latest dependencies
+                run: composer update --no-interaction --no-progress --prefer-stable
+
+            -   name: PHPUnit (stable)
+                run: vendor/bin/phpunit --no-coverage
+
+            -   name: ECS (stable)
+                run: composer ecs
+
+            -   name: PHPStan (stable)
+                run: composer phpstan
+
+            -   name: Deptrac (stable)
+                run: composer deptrac
+
+            -   name: Rector (stable)
+                run: composer rector
