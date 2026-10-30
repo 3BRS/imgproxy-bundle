@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace ThreeBRS\ImgproxyBundle\Tests\Integration\DependencyInjection;
 
 use Liip\ImagineBundle\Imagine\Cache\Resolver\ResolverInterface;
-use Liip\ImagineBundle\Imagine\Filter\FilterConfiguration;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use ThreeBRS\ImgproxyBundle\Imagine\Cache\Resolver\ImgproxyCacheResolver;
 use ThreeBRS\ImgproxyBundle\Imagine\Filter\FilterConfigConverter;
 use ThreeBRS\ImgproxyBundle\Imagine\Filter\FilterConfigConverterInterface;
 use ThreeBRS\ImgproxyBundle\Imagine\ImgproxyUrlBuilder;
 use ThreeBRS\ImgproxyBundle\Imagine\ImgproxyUrlBuilderInterface;
+use ThreeBRS\ImgproxyBundle\Tests\Integration\App\TestKernel;
 use ThreeBRS\ImgproxyBundle\Tests\Integration\IntegrationTestCase;
 
 /**
@@ -27,8 +28,8 @@ final class BundleIntegrationTest extends IntegrationTestCase
 
         $this->bootKernel($config);
 
-        $this->assertNotNull($this->kernel);
-        $this->assertNotNull($this->container);
+        $this->assertInstanceOf(TestKernel::class, $this->kernel);
+        $this->assertInstanceOf(ContainerInterface::class, $this->container);
     }
 
     public function testBundleRegistersAllServices(): void

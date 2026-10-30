@@ -9,18 +9,18 @@ namespace ThreeBRS\ImgproxyBundle\Imagine;
  */
 class ImgproxyUrlBuilder implements ImgproxyUrlBuilderInterface
 {
-    private string $baseUrl;
+    private readonly string $baseUrl;
 
-    private string $sourceBaseUrl;
+    private readonly string $sourceBaseUrl;
 
-    private string $sourcePrefix;
+    private readonly string $sourcePrefix;
 
     public function __construct(
         string $baseUrl,
         string $sourceBaseUrl,
         string $sourcePrefix = '',
-        private ?string $key = null,
-        private ?string $salt = null,
+        private readonly ?string $key = null,
+        private readonly ?string $salt = null,
     ) {
         $this->baseUrl = rtrim($baseUrl, '/');
         $this->sourceBaseUrl = rtrim($sourceBaseUrl, '/');

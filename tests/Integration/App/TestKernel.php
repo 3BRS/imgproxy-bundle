@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ThreeBRS\ImgproxyBundle\Tests\Integration\App;
 
 use Liip\ImagineBundle\LiipImagineBundle;
+use Liip\ImagineBundle\Templating\LazyFilterRuntime;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -84,7 +85,7 @@ class TestKernel extends Kernel
         ]);
 
         // Liip Imagine Bundle configuration
-        $container->loadFromExtension('liip_imagine', [
+        $liipConfig = [
             'resolvers' => [
                 'default' => [
                     'web_path' => [],
@@ -121,7 +122,14 @@ class TestKernel extends Kernel
                     ],
                 ],
             ],
-        ]);
+        ];
+
+        // Liip Imagine 2.7+ deprecates the default "legacy" Twig mode
+        if (class_exists(LazyFilterRuntime::class)) {
+            $liipConfig['twig'] = ['mode' => 'none'];
+        }
+
+        $container->loadFromExtension('liip_imagine', $liipConfig);
 
         // Imgproxy Bundle configuration
         if ($this->bundleConfig !== []) {

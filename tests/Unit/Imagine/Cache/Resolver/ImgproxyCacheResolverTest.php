@@ -6,6 +6,8 @@ namespace ThreeBRS\ImgproxyBundle\Tests\Unit\Imagine\Cache\Resolver;
 
 use Liip\ImagineBundle\Binary\BinaryInterface;
 use Liip\ImagineBundle\Imagine\Cache\Resolver\ResolverInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ThreeBRS\ImgproxyBundle\Imagine\Cache\Resolver\ImgproxyCacheResolver;
 use ThreeBRS\ImgproxyBundle\Imagine\Filter\FilterConfigConverterInterface;
@@ -13,8 +15,8 @@ use ThreeBRS\ImgproxyBundle\Imagine\ImgproxyUrlBuilderInterface;
 
 final class ImgproxyCacheResolverTest extends TestCase
 {
-    private ImgproxyUrlBuilderInterface $urlBuilder;
-    private FilterConfigConverterInterface $configConverter;
+    private ImgproxyUrlBuilderInterface&MockObject $urlBuilder;
+    private FilterConfigConverterInterface&MockObject $configConverter;
     private ImgproxyCacheResolver $resolver;
 
     protected function setUp(): void
@@ -77,9 +79,7 @@ final class ImgproxyCacheResolverTest extends TestCase
         $this->assertSame($path, $result);
     }
 
-    /**
-     * @dataProvider staticAssetPathsProvider
-     */
+    #[DataProvider('staticAssetPathsProvider')]
     public function testResolveSkipsStaticAssets(string $path): void
     {
         $filter = 'thumbnail';

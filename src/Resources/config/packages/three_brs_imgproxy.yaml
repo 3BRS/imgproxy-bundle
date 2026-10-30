@@ -2,7 +2,7 @@
 # Copy this file to your project's config/packages/ directory
 #
 # Installation:
-#   cp vendor/3brs/imgproxy-bundle/config/packages/three_brs_imgproxy.yaml config/packages/
+#   cp vendor/3brs/imgproxy-bundle/src/Resources/config/packages/three_brs_imgproxy.yaml config/packages/
 #
 # Then edit the values below to match your environment
 

@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-10-30
+
+### Added
+- Symfony 8 support (requires PHP 8.4+ and Liip Imagine Bundle 2.16+)
+- PHP 8.5 support
+
+### Changed
+- CI moved from CircleCI to GitHub Actions
+- CI tests PHP 8.1–8.5 with Symfony 5.4, 6.4, 7.4 and 8.x; Symfony 7.4 replaces 7.1 in the matrix
+- CI restricts all Symfony components to the tested Symfony version with Symfony Flex (`SYMFONY_REQUIRE`)
+- Development tools: PHPStan 2, Rector 2, ECS 13, Deptrac 2–4, PHPUnit 10.5+
+- `phpunit.xml.dist` uses the PHPUnit 10.5 schema and tests declare data providers with attributes
+- Docker development image uses PHP 8.5
+
+### Removed
+- PHP 8.0 support: PHP 8.0 reached end of life in November 2023, and Twig releases without security advisories require PHP 8.1. PHP 8.0 is supported by the 1.0.x releases.
+
+### Technical Requirements
+- PHP 8.1, 8.2, 8.3, 8.4, or 8.5
+- Symfony 5.4, 6.x, 7.x, or 8.x
+- Liip Imagine Bundle ^2.0
+
 ## [1.0.0] - 2024-10-29
 
 ### Added
@@ -66,4 +88,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Docker Compose setup for local development
 - Integration test examples
 
+[1.1.0]: https://github.com/3brs/imgproxy-bundle/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/3brs/imgproxy-bundle/releases/tag/v1.0.0

@@ -18,16 +18,15 @@ return RectorConfig::configure()
         __DIR__ . '/var',
         __DIR__ . '/vendor',
     ])
-    // PHP 8.0 as baseline (maintain backward compatibility)
-    ->withPhpSets(php80: true)
+    // PHP 8.1 as baseline (lowest supported PHP version)
+    ->withPhpSets(php81: true)
     // Symfony sets
     ->withSets([
-        LevelSetList::UP_TO_PHP_80,
+        LevelSetList::UP_TO_PHP_81,
         SetList::CODE_QUALITY,
         SetList::DEAD_CODE,
         SetList::TYPE_DECLARATION,
         SetList::EARLY_RETURN,
-        SymfonySetList::SYMFONY_54,
         SymfonySetList::SYMFONY_CODE_QUALITY,
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
         PHPUnitSetList::PHPUNIT_CODE_QUALITY,
